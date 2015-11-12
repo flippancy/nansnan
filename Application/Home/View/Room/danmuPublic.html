@@ -1,0 +1,45 @@
+<extend name="Public:base" />
+<block name="title">
+    Chat
+</block>
+<block name="css">
+    <link href="__HCSS__/room/danmuPublic.css" rel="stylesheet">
+</block>
+<block name="content">
+    <div class="row">
+        <a href="javascript:history.go(-1)" class="col s1"><i class="medium material-icons">close</i></a>
+        <div id="danmu" style="position: relative;pointer-events:none;"></div>
+    </div>
+    <div class="weixin">
+        <i class="medium material-icons" style="opacity: 0.5;">photo</i>
+        <div class="xixi">
+            <img src="{$qrurl}" width="250" height="250" />
+        </div>
+    </div>
+</block>
+<block name="footer">
+</block>
+<block name="js">
+    <script src="__HJS__/jquery.danmu.min.js"></script>
+    <script>
+        var roomid = "{$roomid}";
+        var ws = new WebSocket("ws://115.28.69.109:8282");
+        ws.onmessage = function(e) {
+            e = JSON.parse(e.data);
+            if (e.type == "message" && e.roomid == roomid) {
+                send(e.talkname + ':' + e.message);
+            };
+        };
+        function send(message){
+            var text = message;
+            var color = "blue";
+            var position = 0;
+            var time = $('#danmu').data("nowTime")+1;
+            var size = 1;
+            var text_obj='{ "text":"'+text+'","color":"'+color+'","size":"'+size+'","position":"'+position+'","time":'+time+'}';
+            var new_obj=eval('('+text_obj+')');
+            $('#danmu').danmu("addDanmu",new_obj);
+        }
+        $('#danmu').danmu('danmuStart');
+    </script>
+</block>

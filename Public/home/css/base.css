@@ -1,0 +1,46 @@
+body {
+    font-family: "微软雅黑", "宋体", Arial;
+    background-color: #E9EAEC;
+}
+
+a {
+    color: #26A69A;
+}
+
+/*固定位置*/
+#navs {
+    position: fixed;
+    left: 10px;
+    bottom: 10px;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    color: #fff;
+    cursor: pointer;
+}
+
+/*#navs:after {
+    content: attr(data-close);
+    z-index: 1;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+}*/
+
+/*#navs.active:after {
+    content: attr(data-open);
+}*/
+
+/*#navs a {
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    text-decoration: none;
+    color: #fff;
+    font-size: 0.8em;
+}*/

@@ -1,0 +1,36 @@
+<extend name="Public:base" />
+<block name="title">
+</block>
+<block name="css">
+</block>
+<block name="content">
+    <div class="row">
+        <a href="{:U('Index/menu')}" class="col s1"><i class="medium material-icons">close</i></a>
+        <!-- <a href="#" onclick="history.go(-1)" class="right col s1"><i class="medium material-icons right">account_box</i></a> -->
+    </div>
+    <div class="row">
+        <div class="col s12">
+            <div class="row">
+                <div class="col offset-s1 s10 offset-m3 m6">
+                    <div class="collection">
+                        <volist name="rooms" id="rooms">
+                            <a href="__APP__/Room/intoById/id/{$rooms.id}" class="collection-item">{$rooms.name}
+                                <span class="badge">浏览：{$rooms['see_num']}</span>
+                            </a>
+                            <div class="collection-item">
+                                <a class="waves-effect waves-light btn disabled">
+                                <i class="material-icons left">mode_edit</i>修改</a>
+                                <a href="__APP__/Room/delete/id/{$rooms.id}" class="waves-effect waves-light btn ">
+                                <i class="material-icons left">delete</i>删除</a>
+                            </div>
+                        </volist>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="footer">
+</block>
+<block name="js">
+</block>

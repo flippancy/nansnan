@@ -1,0 +1,67 @@
+<extend name="Public:base" />
+<block name="title">
+</block>
+<block name="css">
+</block>
+<block name="content">
+    <div class="row">
+        <a href="javascript:history.go(-1)" class="col s1"><i class="medium material-icons">close</i></a>
+        <!-- <a href="#add" class="right col s1 modal-trigger"><i class="medium material-icons right">add</i></a> -->
+    </div>
+    <div class="row" style="margin-top: 15%;">
+        <div class="col s12">
+            <div class="row">
+                <div class="input-field col offset-s1 s10">
+                    <i class="material-icons prefix">account_circle</i>
+                    <input id="name" type="text" class="validate">
+                    <label for="name">ROOM_Name</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col offset-s1 s10">
+                    <i class="material-icons prefix">lock</i>
+                    <input id="password" type="password" class="validate">
+                    <label for="password">ROOM_Password</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="footer">
+</block>
+<block name="js">
+    <script>
+    $('#password').bind('keyup', function(event) {
+        if (event.keyCode == "13") {
+            var name = document.getElementById("name").value;
+            var password = document.getElementById("password").value;
+            document.getElementById('password').value = '';
+            document.getElementById('name').value = '';
+            $.ajax({
+                type: 'POST',
+                url: "{:U('Room/into')}",
+                data: {
+                    name: name,
+                    password: password,
+                },
+                cache: false,
+                async: true,
+                success: function(data) {
+                    console.log(data);
+                    if (data == 0) {
+                        Materialize.toast('登陆房间成功,即将跳转', 2000);
+                        setTimeout("location.href = '{:U('Room/danmu')}'", 1000);
+                    } else if (data == 1) {
+                        Materialize.toast('密码错误', 4000)
+                    } else {
+                        Materialize.toast('不存在此房间', 4000)
+                    }
+                },
+                error: function() {
+                    Materialize.toast('数据提交失败', 4000)
+                }
+            });
+        }
+    });
+    </script>
+</block>

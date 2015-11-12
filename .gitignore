@@ -1,0 +1,8 @@
+.DS_Store
+.idea/
+.idea/workspace.xml
+*.log
+Application/Runtime/
+Runtime/
+Uploads/
+*.iml

@@ -1,0 +1,30 @@
+<extend name="Public:base" />
+<block name="title">
+</block>
+<block name="css">
+</block>
+<block name="content">
+    <div class="row">
+        <!-- <div onclick="history.go(-1)" class="col s1"><i class="medium material-icons">close</i></div> -->
+        <a href="{:U('Index/userDetail')}" class="right col s1"><i class="medium material-icons right">account_box</i></a>
+    </div>
+    <div class="row">
+        <div class="col s12">
+            <div class="row">
+                <div class="col offset-s1 s10 offset-m3 m6">
+                      <div class="collection">
+                        <a href="{:U('Index/mine')}" class="collection-item center">我的房间</a>
+                        <a href="{:U('Room/into')}" class="collection-item center">进入房间</a>
+                        <a href="{:U('Room/add')}" class="collection-item center">创建房间</a>
+                        <a href="#!" class="collection-item center">收藏列表(功能未完成)</a>
+                        <a href="{:U('Login/logout')}" class="collection-item center">退出</a>
+                      </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="footer">
+</block>
+<block name="js">
+</block>

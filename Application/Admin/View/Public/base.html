@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no, email=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="full-screen" content="yes">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>
+        <block name="title"></block>
+    </title>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <link href="__HCSS__/base.css" rel="stylesheet">
+    <block name="css"></block>
+</head>
+
+<body class="cbp-spmenu-push">
+    <header class="navbar navbar-fixed-top navbar-custom" id="navbar">
+        <nav class="dropdown navbar-menu">
+            <block name="nav-menu"></block>
+        </nav>
+        <div class="navbar-header" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" style="cursor:pointer">
+            <h5 class="brand"><block name="title-head"></block></h5>
+            <a class="navbar-brand" href="<block name='return-href'></block>">
+                <span id="return" class="glyphicon glyphicon-menu-left"></span>
+                <block name="return-text"></block>
+            </a>
+        </div>
+        <div class="clear"></div>
+        <block name="header"></block>
+    </header>
+    <div class="container" id="container">
+        <block name="content"></block>
+    </div>
+    <footer>
+        <block name="footer"></block>
+    </footer>
+</body>
+<script src="http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+<script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<block name="js"></block>
+
+</html>

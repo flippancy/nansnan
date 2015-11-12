@@ -1,0 +1,37 @@
+<extend name="Public:base" />
+<block name="title">
+</block>
+<block name="css">
+</block>
+<block name="content">
+    <div class="row" style="margin-top: 15%;">
+        <div class="col s12">
+            <div class="row">
+                <div class="input-field col s6 center">
+                    <input name="group1" type="radio" id="person" value="Person" onclick="selected();" />
+                    <label for="person">普通登陆</label>
+                </div>
+                <div class="input-field col s6 center">
+                    <input name="group1" type="radio" id="public" value="Public" onclick="selected();"/>
+                    <label for="public">公共观看</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</block>
+<block name="footer">
+</block>
+<block name="js">
+    <script>
+    function selected(){
+        var type = document.getElementsByName("group1");
+        for (var i = 0; i < type.length; i++) {
+            if (type[i].checked)
+                var logintype = type[i].value;
+        }
+        Materialize.toast('选择成功,即将跳转', 800);
+        setTimeout("location.href = '{:U('login/login"+logintype+"')}'", 800);
+    }
+    </script>
+</block>

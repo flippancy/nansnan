@@ -1,0 +1,146 @@
+<extend name="Public:base" />
+<block name="title">
+</block>
+<block name="css">
+</block>
+<block name="content">
+    <div class="row">
+        <a href="javascript:history.go(-1)" class="col s1"><i class="medium material-icons">close</i></a>
+        <!-- <a href="#" onclick="history.go(-1)" class="right col s1"><i class="medium material-icons right">account_box</i></a> -->
+    </div>
+    <div class="row">
+        <div class="col s12">
+            <div class="row">
+                <div class="col s12 offset-m3 m6">
+                    <ul class="collapsible" data-collapsible="accordion">
+                        <li>
+                            <div class="collapsible-header">昵称：{$user.username}<i class="medium material-icons right">edit</i></div>
+                            <div class="collapsible-body">
+                                <div class="row" style="margin-bottom: 0;">
+                                    <div class="input-field col s9">
+                                        <input id="name" type="text" class="validate">
+                                        <label for="name">昵称</label>
+                                    </div>
+                                    <div class="input-field col s3">
+                                        <a class="waves-effect waves-light btn" style="width: 100%;height: 100%;padding:  0;">修改</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="collapsible-header">账号：{$user.loginname}</div>
+                        </li>
+                        <li>
+                            <div class="collapsible-header">上传登录时间：{$user.lastlogin}</div>
+                        </li>
+                        <li>
+                            <div class="collapsible-header">弹幕颜色：{$user.danmu_color}<i class="medium material-icons right">edit</i></div>
+                            <div class="collapsible-body">
+                                <div class="row">
+                                    <div class="col s3">
+                                    <input name="color" type="radio" id="aqua" onclick="selected();" />
+                                    <label for="aqua" style="color: aqua;">aqua</label>
+                                    </div>
+                                    <div class="col s3">
+                                    <input name="color" type="radio" id="black" onclick="selected();"/>
+                                    <label for="black" style="color: black;">black</label>
+                                    </div>
+                                    <div class="col s3">
+                                    <input name="color" type="radio" id="blue" onclick="selected();"/>
+                                    <label for="blue" style="color: blue;">blue</label>
+                                    </div>
+                                    <div class="col s3">
+                                    <input name="color" type="radio" id="fuchsia" onclick="selected();"/>
+                                    <label for="fuchsia" style="color: fuchsia;">fuchsia</label>
+                                    </div>
+                                    <div class="col s3">
+                                    <input name="color" type="radio" id="gray" onclick="selected();"/>
+                                    <label for="gray" style="color: gray;">gray</label>
+                                    </div>
+                                    <div class="col s3">
+                                    <input name="color" type="radio" id="green" onclick="selected();"/>
+                                    <label for="green" style="color: green;">green</label>
+                                    </div>
+                                    <div class="col s3">
+                                    <input name="color" type="radio" id="lime" onclick="selected();"/>
+                                    <label for="lime" style="color: lime;">lime</label>
+                                    </div>
+                                    <div class="col s3">
+                                    <input name="color" type="radio" id="maroon" onclick="selected();"/>
+                                    <label for="maroon" style="color: maroon;">maroon</label>
+                                    </div>
+                                    <div class="col s3">
+                                    <input name="color" type="radio" id="navy" onclick="selected();"/>
+                                    <label for="navy" style="color: navy;">navy</label>
+                                    </div>
+                                    <div class="col s3">
+                                    <input name="color" type="radio" id="olive" onclick="selected();"/>
+                                    <label for="olive" style="color: olive;">olive</label>
+                                    </div>
+                                    <div class="col s3">
+                                    <input name="color" type="radio" id="purple" onclick="selected();"/>
+                                    <label for="purple" style="color: purple;">purple</label>
+                                    </div>
+                                    <div class="col s3">
+                                    <input name="color" type="radio" id="red" onclick="selected();"/>
+                                    <label for="red" style="color: red;">red</label>
+                                    </div>
+                                    <div class="col s3">
+                                    <input name="color" type="radio" id="silver" onclick="selected();"/>
+                                    <label for="silver" style="color: silver;">silver</label>
+                                    </div>
+                                    <div class="col s3">
+                                    <input name="color" type="radio" id="teal" onclick="selected();"/>
+                                    <label for="teal" style="color: teal;">teal</label>
+                                    </div>
+                                    <div class="col s3">
+                                    <input name="color" type="radio" id="white" onclick="selected();"/>
+                                    <label for="white" style="color: white;">white</label>
+                                    </div>
+                                    <div class="col s3">
+                                    <input name="color" type="radio" id="yellow" onclick="selected();"/>
+                                    <label for="yellow" style="color: yellow;">yellow</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="footer">
+</block>
+<block name="js">
+<script>
+    function selected(){
+        var radio = document.getElementsByName('color');
+        var color;
+        for (var i = radio.length - 1; i >= 0; i--) {
+            if(radio[i].checked)
+                color = radio[i].id;
+        };
+        $.ajax({
+            type: 'POST',
+            url: "{:U('Index/setUserColor')}",
+            data: {
+                color: color,
+            },
+            cache: false,
+            async: true,
+            success: function(data) {
+                if (data == 0) {
+                    Materialize.toast('修改颜色成功,即将刷新', 2000);
+                    setTimeout("location.href = '{:U('Index/userDetail')}'", 1000);
+                } else {
+                    Materialize.toast('修改颜色失败', 4000)
+                }
+            },
+            error: function() {
+                Materialize.toast('数据提交失败', 4000)
+            }
+        });
+    }
+</script>
+</block>
