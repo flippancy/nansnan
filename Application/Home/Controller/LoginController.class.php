@@ -73,4 +73,14 @@ class LoginController extends CommonController {
     	session(null);
     	$this->success("成功退出！",'logintype');
     }
+    public function register(){
+        if (IS_POST) {
+            $info = I('post.');
+            $loginService = D('Login' ,'Service');
+            $reply = $loginService->addUser($info);
+            $this->ajaxReturn($reply);
+        }else{
+            $this->display();
+        }
+    }
 }

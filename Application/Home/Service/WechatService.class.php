@@ -175,14 +175,16 @@ class WechatService extends CommonService {
         return $reply;
     }
 
-    public function sock($message, $nickname, $roomid){
-        $client = stream_socket_client('tcp://115.28.69.109:7273');
+    public function sock($message, $nickname, $roomid, $color = 'black', $position = '0'){
+        $client = stream_socket_client('tcp://0.0.0.0:7273');
         if(!$client)exit("can not connect");
         $new_message = array(
             'type'=>'message',
             'loginname'=>$nickname,
             'roomid'=>$roomid,
             'message'=>$message,
+            'color'=>$color,
+            'position'=>$position,
         );
         $data = json_encode($new_message);
         fwrite($client, "$data"."\n");

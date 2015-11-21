@@ -13,7 +13,6 @@ return array(
                             'bucket' => 'flippancy',
                 )
     ),
-    'SALT' => 'flippancy',
 
     'DB_TYPE' => 'mysql',
     'DB_HOST' => '115.28.69.109',
@@ -40,5 +39,25 @@ return array(
     'USERID' => 'USERID',
     'SESSIONID' => 'SESSIONID',
     'LOGINNAME' => 'LOGINNAME',
+
+	'THINK_EMAIL' => array(
+
+	'SMTP_HOST' => 'smtp.163.com', //SMTP服务器
+
+	'SMTP_PORT' => '465', //SMTP服务器端口
+
+	'SMTP_USER' => '13160673215@163.com', //SMTP服务器用户名
+
+	'SMTP_PASS' => 'chenjianxiang123', //SMTP服务器密码
+
+	'FROM_EMAIL' => '13160673215@163.com', //发件人EMAIL
+
+	'FROM_NAME' => 'flippancy', //发件人名称
+
+	'REPLY_EMAIL' => '13160673215@163.com', //回复EMAIL（留空则为发件人EMAIL）
+
+	'REPLY_NAME' => 'flippancy', //回复名称（留空则为发件人名称）
+
+	),
 );
 ?>

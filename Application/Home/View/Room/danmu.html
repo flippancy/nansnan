@@ -17,7 +17,7 @@
                 <input id="talk" type="text" class="validate">
                 <label for="talk">回车发送</label>
                 <div class="col s4">
-                    <input name="position" type="radio" id="0" />
+                    <input name="position" type="radio" id="0" checked="checked" />
                   <label for="0">滚动</label>
                 </div>
                 <div class="col s4">
@@ -37,18 +37,27 @@
             <img src="{$qrurl}" width="250" height="250" />
         </div>
     </div>
+    <div class="switch" style="position:absolute;left: 0;bottom: 3px;">
+        <label>
+            关
+            <input type="checkbox" value="on" name="checkbox" onchange="go();">
+            <span class="lever"></span> 开
+        </label>
+    </div>
+
 </block>
 <block name="footer">
 </block>
 <block name="js">
     <script src="__HJS__/jquery.danmu.min.js"></script>
     <script>
+    var send_mode = false;
     var roomid = "{$roomid}";
-    var ws = new WebSocket("ws://115.28.69.109:8282");
+    var ws = new WebSocket("ws://"+document.domain+":8282");
     // 接收消息
     ws.onmessage = function(e) {
         e = JSON.parse(e.data);
-        if (e.type == "message" && e.roomid == roomid) {
+        if (e.type == "message" && e.roomid == roomid && send_mode == false) {
             send(e.talkname + ':' + e.message, e.color, e.position);
         };
     };
@@ -93,6 +102,16 @@
     }
     $('#danmu').danmu('danmuStart');
 
+
+    function go() {
+        var type = document.getElementsByName("checkbox");
+        for (var i = 0; i < type.length; i++) {
+            if (type[i].checked)
+                var logintype = type[i].value;
+        }
+        if (logintype == "on") send_mode = true;
+        else send_mode = false;
+    }
     // var sendObj = {
     //     type: 'update',
     //     x: tadpole.x.toFixed(1),
