@@ -9,6 +9,9 @@ class LoginController extends CommonController {
         $this->display();
     }
     public function loginPerson(){
+        if (session(C("SESSIONID")) != null) {
+            $this->redirect('index/menu');
+        }
         if(IS_POST) {
             $User = M("User");
             $username = I('post.username');
@@ -78,7 +81,11 @@ class LoginController extends CommonController {
             $info = I('post.');
             $loginService = D('Login' ,'Service');
             $reply = $loginService->addUser($info);
-            $this->ajaxReturn($reply);
+            if($reply['status'] == 'succeed'){
+                $this->success($reply['msg']);
+            }else{
+                $this->error($reply['msg']);
+            }
         }else{
             $this->display();
         }

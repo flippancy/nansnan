@@ -1,0 +1,18 @@
+div.divider{
+	height: 10px;
+}
+h5{
+	margin-bottom: 0;
+}
+::-webkit-input-placeholder { /* WebKit browsers */
+    color:    #26A69A;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:    #26A69A;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:    #26A69A;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color:    #26A69A;
+}

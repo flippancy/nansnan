@@ -1,0 +1,241 @@
+<extend name="Public:base" />
+<block name="title">
+</block>
+<block name="css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/home/lightbox2/css/lightbox.css">
+    <link href="__HCSS__/dropzone.min.css" rel="stylesheet">
+</block>
+<block name="content">
+    <div class="row">
+        <a href="{:U('Index/theme')}" class="col s1"><i class="medium material-icons">close</i></a>
+        <a href="#addPhoto" class="right col s1 modal-trigger"><i class="medium material-icons right">add</i></a>
+        <div id="danmu" style="position: relative;pointer-events:none;"></div>
+    </div>
+    <div class="row add">
+        <!--<div class="col s6 m3">
+              <div class="card">
+                <div class="card-image">
+                <a href="img/4.jpg" data-lightbox="image-1" data-title="My caption"><img src="img/4.jpg"></a>
+                  <img src="images/sample-1.jpg">
+                  <span class="card-title">Card Title</span>
+                </div>
+                <div class="card-content">
+                  <p></p>
+                </div>
+              </div>
+            </div> -->
+    </div>
+    <div id="addPhoto" class="modal bottom-sheet">
+        <div class="modal-content">
+            <form action="" class="dropzone">
+                <div class="fallback">
+                    <input name="file" type="file" multiple/>
+                </div>
+            </form>
+            <div class="collection addPhoto">
+                <volist name="info" id="info">
+                    <div class="row collection-item">
+                        <div class="col s4">
+                            <img src="{$info.url}?imageView2/1/w/150/h/150" style="width:100%;max-width:150px;" />
+                        </div>
+                        <div class="col s8">
+                            创建时间：{$info.created_at}
+                            <br>
+                            点赞数：<span style="color:red;">{$info.likes}</span>
+                        </div>
+                        <div class="col s12">
+                            <form action="{:U('Photo/update')}" method="post">
+                                <div class="input-field row">
+                                    <input type="text" class="input-field col s10 {$info.id}" name="remark" value="{$info.remark}">
+                                    <input type="hidden" class="input-field" name="id" value="{$info.id}">
+                                    <button class="btn col s2" type="submit"><i class="medium material-icons">edit</i></button>
+                                </div>
+                            </form>
+                            <a href="#" class="btn col s6" onclick="sendPhoto('{$info.id}','{$info.url}',this,'{$info.likes}');return false;"><i class="medium material-icons">send</i></a>
+                            <a href="__APP__/Photo/delete?name={$info.name}" class="btn col s6"><i class="medium material-icons">delete</i></a>
+                        </div>
+                    </div>
+                </volist>
+                {$page}
+            </div>
+        </div>
+    </div>
+</block>
+<block name="footer">
+    <div style="width:100%;height:45px;margin:0 auto;background:#26A69A;position:fixed;bottom:0;text-align:center;">
+        <div class="row">
+            <div class="col s12 m12">
+                <input id="talk" type="text" class="validate" placeholder="按回车发送内容">
+            </div>
+        </div>
+    </div>
+</block>
+<block name="js">
+    <script src="__HJS__/imagesloaded.pkgd.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/home/lightbox2/js/lightbox.js"></script>
+    <script src="__HJS__/jquery.danmu.min.js"></script>
+    <script type="text/javascript" src="__HJS__/dropzone.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('.modal-trigger').leanModal({
+            dismissible: true, // Modal can be dismissed by clicking outside of the modal
+            opacity: .5, // Opacity of modal background
+            in_duration: 300, // Transition in duration
+            out_duration: 200, // Transition out duration
+        });
+    });
+
+    var roomid = "{$roomid}";
+    var ws = new WebSocket("ws://115.28.69.109:8282");
+    // var ws = new WebSocket("ws://"+document.domain+":8282");
+    // 接收消息
+    ws.onmessage = function(e) {
+        e = JSON.parse(e.data);
+        if (e.type == "message" && e.roomid == roomid) {
+            if (e.talkname == "") {
+                send(e.message, e.color, e.position);
+            } else {
+                send(e.talkname + ':' + e.message, e.color, e.position);
+            };
+        } else if (e.type == "photo" && e.roomid == roomid) {
+            if (e.talkname == "") {
+                addPhoto(e.message, e.url, e.likes, e.id);
+            } else {
+                addPhoto(e.message, e.url, e.likes, e.id, e.talkname);
+            };
+        }
+    };
+
+    $('#talk').bind('keyup', function(event) {
+        if (event.keyCode == "13") {
+            var message = document.getElementById("talk").value;
+            document.getElementById('talk').value = '';
+            if (message != '') {
+                var sendObj = {
+                    type: 'message',
+                    message: message,
+                    loginname: "{$loginname}",
+                    roomid: "{$roomid}",
+                    color: "{$danmu_color}",
+                    position: 0
+                };
+                ws.send(JSON.stringify(sendObj));
+            };
+        }
+    });
+
+    function send(message, color, position) {
+        var text = message;
+        var color = color;
+        var position = position;
+        var time = $('#danmu').data("nowTime") + 1;
+        var size = 1;
+        var text_obj = '{ "text":"' + text + '","color":"' + color + '","size":"' + size + '","position":"' + position + '","time":' + time + '}';
+        var new_obj = eval('(' + text_obj + ')');
+
+        $('#danmu').danmu("addDanmu", new_obj);
+    };
+    $('#danmu').danmu('danmuStart');
+
+    function addPhoto(message, url, likes, id, loginname) {
+        $(".add").prepend(
+            '<div class="col s6 m3">' +
+            '  <div class="card">' +
+            '    <div class="card-image">' +
+            '       <a href="' + url + '" data-lightbox="image-1" data-title="' + message + '"><img src="' + url + '?imageView2/1/w/150/h/150"></a>' +
+            '      <span class="card-title" style="font-size:10px;opacity:0.7;padding:2px;">' + loginname + '</span>' +
+            '    </div>' +
+            '    <div class="card-content" onclick="sentLikes('+id+');return false;">' +
+            '      <p>' + message +'<span class="right '+id+'">'+likes+'</span></p>' +
+            '    </div>' +
+            '  </div>' +
+            '</div>');
+    };
+    </script>
+    <script type="text/javascript">
+    $(".dropzone").dropzone({
+        paramName: "file",
+        url: "{:U('Photo/upload')}",
+        maxFiles: 10,
+        maxFilesize: 512,
+        acceptedFiles: ".bmp,.jpg,.gif,.svg,.png,.jpeg",
+        init: function() {
+            this.on("success", function(file, info) {
+                $(".addPhoto").prepend(
+                    '<div class="row collection-item">'+
+                    '    <div class="col s4">'+
+                    '            <img src="'+info.url+'?imageView2/1/w/150/h/150" style="width:100%;max-width:150px;" />'+
+                    '    </div>'+
+                    '    <div class="col s8">'+
+                    '        创建时间：'+info.created_at+
+                    '    </div>'+
+                    '    <div class="col s12">'+
+                    '        <form action="{:U('Photo/update')}" method="post">'+
+                    '            <div class="input-field row">'+
+                    '                <input type="text" class="input-field col s10 '+info.id+'" name="remark" value="'+info.remark+'">'+
+                    '                <input type="hidden" class="input-field" name="id" value="'+info.id+'">'+
+                    '                <button class="btn col s2" type="submit"><i class="medium material-icons">edit</i></button>'+
+                    '            </div>'+
+                    '        </form>'+
+                    '        <a href="#" class="btn col s6" onclick="sendPhoto(\''+info.id+'\',\''+info.url+'\',this);return false;"><i class="medium material-icons">send</i></a>'+
+                    '        <a href="__APP__/Photo/delete?name={$info.name}" class="btn col s6"><i class="medium material-icons">delete</i></a>'+
+                    '    </div>'+
+                    '</div>');
+            });
+            this.on("removedfile", function(file) {
+                console.log("File " + file.name + "removed");
+            });
+        }
+    });
+
+    var roomid = "{$roomid}";
+    var ws = new WebSocket("ws://115.28.69.109:8282");
+
+    function sendPhoto(id, url, a, likes) {
+        // url = url + '?imageView2/1/w/150/h/150';
+        var inputMsg = $('.'+id).val();
+        if (inputMsg != '' && a.className == 'btn col s6') {
+            var sendObj = {
+                type: 'photo',
+                message: inputMsg,
+                loginname: "{$loginname}",
+                roomid: "{$roomid}",
+                url: url,
+                likes: likes,
+                id: id
+            };
+            a.className = a.className + ' disabled';
+            ws.send(JSON.stringify(sendObj));
+        };
+    };
+
+    function sentLikes(id){
+        var classId = $('.'+id);
+        if (classId.attr('class') == ('right '+id)) {
+            $.ajax({
+                type: 'POST',
+                url: "{:U('Room/likes')}",
+                data: {
+                    id: id,
+                },
+                cache: false,
+                async: true,
+                success: function(data) {
+                    Materialize.toast(data.msg, 4000)
+                    if (data.status == 1) {
+                        var num = parseInt(classId.html())+1;
+                        classId.attr('style','color:red');
+                        classId.html(num);
+                        classId.attr('class','right');
+                    }
+                },
+                error: function() {
+                    Materialize.toast('数据提交失败', 4000)
+                }
+            });
+        }else{
+            Materialize.toast('已赞过该图片', 4000);
+        }
+    }
+    </script>
+</block>

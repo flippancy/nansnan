@@ -27,7 +27,11 @@
         ws.onmessage = function(e) {
             e = JSON.parse(e.data);
             if (e.type == "message" && e.roomid == roomid) {
-                send(e.talkname + ':' + e.message);
+                if (e.talkname == "") {
+                    send(e.message, e.color, e.position);
+                }else{
+                    send(e.talkname + ':' + e.message, e.color, e.position);
+                };
             };
         };
         function send(message){

@@ -9,8 +9,8 @@ return array(
                     'driverConfig' => array (
                             'secrectKey' => '-fxARUAKUBGULVNH1-pF-ApqbYVdRga4FBrsdPqd', 
                             'accessKey' => 'Y86vP1ZhTFtOUP8MkLJz3cPCFZ-KP4FR0o8qUdFR',
-                            'domain' => '7xl0od.com1.z0.glb.clouddn.com',
-                            'bucket' => 'flippancy',
+                            'domain' => '7xou4x.com1.z0.glb.clouddn.com',
+                            'bucket' => 'nansnan',
                 )
     ),
 

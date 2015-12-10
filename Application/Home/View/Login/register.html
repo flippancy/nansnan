@@ -8,92 +8,53 @@
         <a href="javascript:history.go(-1)" class="col s1"><i class="medium material-icons">close</i></a>
     </div>
     <div class="row">
-        <div class="col s12">
-            <div class="row">
-                <div class="input-field col offset-s1 s10">
-                    <i class="material-icons prefix">account_circle</i>
-                    <input id="email" type="email" class="validate">
-                    <label for="email">邮箱</label>
+        <form action="{:U('Login/register')}" method="post">
+            <div class="col s12">
+                <div class="row">
+                    <div class="input-field col offset-s1 s10">
+                        <i class="material-icons prefix">account_circle</i>
+                        <input id="email" type="email" class="validate" name="email" required>
+                        <label for="email">邮箱</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col offset-s1 s10">
+                        <i class="material-icons prefix">account_circle</i>
+                        <input id="username" type="text" class="validate" name="username" pattern="^\w{6,18}$" required>
+                        <label for="username">账号（8~16位）</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col offset-s1 s10">
+                        <i class="material-icons prefix">account_circle</i>
+                        <input id="loginname" type="text" class="validate" name="loginname" required>
+                        <label for="loginname">昵称</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col offset-s1 s10">
+                        <i class="material-icons prefix">lock</i>
+                        <input id="password" type="password" class="validate" name="password" pattern="^[a-zA-Z]\w{5,17}$" required>
+                        <label for="password">密码（字母开头，长度在6~18之间，只能包含字母、数字和下划线）</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col offset-s1 s10">
+                        <i class="material-icons prefix">lock</i>
+                        <input id="password_rw" type="password" class="validate" name="password_rw" required>
+                        <label for="password_rw">第二次输入密码</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col offset-s1 s10 center">
+                        <input class="btn" type="submit" value="注册">
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="input-field col offset-s1 s10">
-                    <i class="material-icons prefix">account_circle</i>
-                    <input id="username" type="text" class="validate">
-                    <label for="username">账号</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="input-field col offset-s1 s10">
-                    <i class="material-icons prefix">account_circle</i>
-                    <input id="loginname" type="text" class="validate">
-                    <label for="loginname">昵称</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="input-field col offset-s1 s10">
-                    <i class="material-icons prefix">lock</i>
-                    <input id="password" type="text" class="validate">
-                    <label for="password">密码</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="input-field col offset-s1 s10">
-                    <i class="material-icons prefix">lock</i>
-                    <input id="password_rw" type="password" class="validate">
-                    <label for="password_rw">第二次输入密码</label>
-                </div>
-            </div>
-        </div>
-    </div>
+        </form>
     </div>
 </block>
 <block name="footer">
 </block>
 <block name="js">
-    <script>
-    $('#password_rw').bind('keyup', function(event) {
-        if (event.keyCode == "13") {
-            var username = document.getElementById("username").value;
-            var loginname = document.getElementById("loginname").value;
-            var email = document.getElementById("email").value;
-            var password = document.getElementById("password").value;
-            var password_rw = document.getElementById("password_rw").value;
-            document.getElementById('username').value = '';
-            document.getElementById('email').value = '';
-            document.getElementById('password').value = '';
-            document.getElementById('password_rw').value = '';
-            if (password != password_rw) {
-                Materialize.toast('两次密码输入不一致', 2000);
-                return;
-            };
-            $.ajax({
-                type: 'POST',
-                url: "{:U('Login/register')}",
-                data: {
-                    username: username,
-                    email: email,
-                    password: password,
-                    loginname: loginname,
-                },
-                cache: false,
-                async: true,
-                success: function(data) {
-                    console.log(data['msg']);
-                    if (data['status'] == "succeed") {
-                        Materialize.toast('注册成功,即将跳转', 2000);
-                        setTimeout("location.href = '{:U('Index/menu')}'", 1000);
-                    } else if (data == "error") {
-                        Materialize.toast(data['msg'], 4000)
-                    } else {
-                        Materialize.toast('不明错误', 4000)
-                    }
-                },
-                error: function() {
-                    Materialize.toast('数据提交失败', 4000)
-                }
-            });
-        }
-    });
-    </script>
 </block>

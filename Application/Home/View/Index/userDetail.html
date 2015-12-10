@@ -14,21 +14,21 @@
                 <div class="col s12 offset-m3 m6">
                     <ul class="collapsible" data-collapsible="accordion">
                         <li>
-                            <div class="collapsible-header">昵称：{$user.username}<i class="medium material-icons right">edit</i></div>
+                            <div class="collapsible-header">昵称：{$user.loginname}<i class="medium material-icons right">edit</i></div>
                             <div class="collapsible-body">
                                 <div class="row" style="margin-bottom: 0;">
                                     <div class="input-field col s9">
-                                        <input id="name" type="text" class="validate">
-                                        <label for="name">昵称</label>
+                                        <input id="loginname" type="text" class="validate">
+                                        <label for="loginname">昵称</label>
                                     </div>
                                     <div class="input-field col s3">
-                                        <a class="waves-effect waves-light btn" style="width: 100%;height: 100%;padding:  0;">修改</a>
+                                        <a class="waves-effect waves-light btn" style="width: 100%;height: 100%;padding:  0;" onclick="changeLoginname();">修改</a>
                                     </div>
                                 </div>
                             </div>
                         </li>
                         <li>
-                            <div class="collapsible-header">账号：{$user.loginname}</div>
+                            <div class="collapsible-header">账号：{$user.username}</div>
                         </li>
                         <li>
                             <div class="collapsible-header">上传登录时间：{$user.lastlogin}</div>
@@ -135,6 +135,31 @@
                     setTimeout("location.href = '{:U('Index/userDetail')}'", 1000);
                 } else {
                     Materialize.toast('修改颜色失败', 4000)
+                }
+            },
+            error: function() {
+                Materialize.toast('数据提交失败', 4000)
+            }
+        });
+    }
+
+    function changeLoginname(){
+        var loginname = document.getElementById('loginname').value;
+
+        $.ajax({
+            type: 'POST',
+            url: "{:U('Index/setLoginname')}",
+            data: {
+                loginname: loginname,
+            },
+            cache: false,
+            async: true,
+            success: function(data) {
+                if (data == 0) {
+                    Materialize.toast('修改昵称成功,即将刷新', 2000);
+                    setTimeout("location.href = '{:U('Index/userDetail')}'", 1000);
+                } else {
+                    Materialize.toast('修改昵称失败', 4000)
                 }
             },
             error: function() {

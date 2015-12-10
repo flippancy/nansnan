@@ -14,16 +14,9 @@
                 <div class="col offset-s1 s10 offset-m3 m6">
                     <div class="collection">
                         <volist name="rooms" id="rooms">
-                            <a href="__APP__/Room/intoById/id/{$rooms.id}" class="collection-item">{$rooms.name}
+                            <a href="__APP__/Room/intoThemeById/id/{$rooms.id}" class="collection-item">{$rooms.name}
                                 <span class="badge">浏览：{$rooms['see_num']}</span>
                             </a>
-                            <div class="collection-item">
-                                <a class="waves-effect waves-light btn disabled">
-                                <i class="material-icons left">mode_edit</i>修改</a>
-                                <a href="__APP__/Room/delete/id/{$rooms.id}" class="waves-effect waves-light btn ">
-                                <i class="material-icons left">delete</i>删除</a>
-                                <span class="right badge">{$rooms['type']}</span>
-                            </div>
                         </volist>
                     </div>
                 </div>

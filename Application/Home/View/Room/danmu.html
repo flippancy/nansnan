@@ -39,9 +39,8 @@
     </div>
     <div class="switch" style="position:absolute;left: 0;bottom: 3px;">
         <label>
-            关
             <input type="checkbox" value="on" name="checkbox" onchange="go();">
-            <span class="lever"></span> 开
+            <span class="lever"></span> 发射器模式
         </label>
     </div>
 
@@ -51,14 +50,17 @@
 <block name="js">
     <script src="__HJS__/jquery.danmu.min.js"></script>
     <script>
-    var send_mode = false;
     var roomid = "{$roomid}";
     var ws = new WebSocket("ws://"+document.domain+":8282");
     // 接收消息
     ws.onmessage = function(e) {
         e = JSON.parse(e.data);
-        if (e.type == "message" && e.roomid == roomid && send_mode == false) {
-            send(e.talkname + ':' + e.message, e.color, e.position);
+        if (e.type == "message" && e.roomid == roomid) {
+            if (e.talkname == "") {
+                send(e.message, e.color, e.position);
+            }else{
+                send(e.talkname + ':' + e.message, e.color, e.position);
+            };
         };
     };
 
@@ -105,25 +107,14 @@
 
     function go() {
         var type = document.getElementsByName("checkbox");
-        for (var i = 0; i < type.length; i++) {
-            if (type[i].checked)
-                var logintype = type[i].value;
-        }
-        if (logintype == "on") send_mode = true;
-        else send_mode = false;
+        // for (var i = 0; i < type.length; i++) {
+            if (type[0].checked)
+                var logintype = type[0].value;
+        // };
+        if (logintype == "on"){
+            Materialize.toast('即将进入发射器模式', 3000);
+            setTimeout("location.href = '{:U('Room/send')}'", 3000);
+        };
     }
-    // var sendObj = {
-    //     type: 'update',
-    //     x: tadpole.x.toFixed(1),
-    //     y: tadpole.y.toFixed(1),
-    //     angle: tadpole.angle.toFixed(3),
-    //     momentum: tadpole.momentum.toFixed(3)
-    // };
-
-    // if(tadpole.name) {
-    //     sendObj['name'] = tadpole.name;
-    // }
-
-    // webSocket.send(JSON.stringify(sendObj));
     </script>
 </block>

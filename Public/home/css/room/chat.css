@@ -1,0 +1,9 @@
+.chip{
+	border-radius:5px;
+	word-wrap:break-word;
+	word-break:break-all;
+	height: auto;
+}
+h6{
+	color:#fff;
+}

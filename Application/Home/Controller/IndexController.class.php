@@ -6,6 +6,9 @@ class IndexController extends CommonController {
     	$this->init();
         $this->display();
     }
+    public function about(){
+        $this->display();
+    }
     public function menu(){
     	$this->init();
     	$this->display();
@@ -18,6 +21,13 @@ class IndexController extends CommonController {
     	}
     	$this->assign('rooms',$result);
     	$this->display();
+    }
+    public function theme(){
+        $this->init();
+        $Room = M("Room");
+        $result = $Room->where("type='theme'")->order('see_num desc')->select();
+        $this->assign('rooms',$result);
+        $this->display();
     }
     public function userDetail(){
         $this->init();
@@ -32,6 +42,17 @@ class IndexController extends CommonController {
         $this->init();
         if (IS_POST && session(C("USERID"))) {
             $data['danmu_color'] = I('post.color');
+            $data['id'] = session(C("USERID"));
+            $User = M("User")->save($data);
+            echo json_encode(0);
+        }else{
+            echo json_encode(1);
+        }
+    }
+    public function setLoginname(){
+        $this->init();
+        if (IS_POST && session(C("USERID"))) {
+            $data['loginname'] = I('post.loginname');
             $data['id'] = session(C("USERID"));
             $User = M("User")->save($data);
             echo json_encode(0);
